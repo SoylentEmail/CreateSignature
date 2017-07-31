@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, width=device-width, user-scalable=no"/>
+
+    <title>Soylent Create Signature</title>
+</head>
+
+<style type="text/css">
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: sans-serif;
+        font-size: 1em;
+        display: flex;
+        justify-content: center;
+    }
+
+    input, button {
+        padding: 0.5em;
+        width: 100%;
+    }
+
+    button {
+        background-color: #efefef;
+        border: 1px solid #dddddd;
+    }
+
+</style>
+<body>
+
+<form action="" onsubmit="downloadSignature(this); return false">
+
+    <table>
+        <td>
+            <a href="https://www.soylent.com" target="_blank">
+                <img src="https://prettythings.soylent.com/misc/mail/soylent_logo.png" width="100">
+            </a>
+        </td>
+        <td>
+            <h3>Create Signature</h3>
+        </td>
+    </table>
+
+    <hr>
+    <table>
+        <colgroup>
+            <col width="100px">
+        </colgroup>
+        <tr>
+            <td>Name</td>
+            <td colspan="3">
+                <input type="text" placeholder="Name" name="name" required="required">
+            </td>
+        </tr>
+        <tr>
+            <td>Job Title</td>
+            <td colspan="3">
+                <input type="text" placeholder="Job Title" name="title" required="required">
+            </td>
+        </tr>
+        <tr>
+            <td>Phone</td>
+            <td>
+                <input oninput="maxLengthCheck(this)" type="number" placeholder="-" name="phone1" required="required" min="1" max="999">
+            </td>
+            <td>
+                <input oninput="maxLengthCheck(this)" type="number" placeholder="-" name="phone2" required="required" min="1" max="999">
+            </td>
+            <td>
+                <input oninput="maxLengthCheck(this)" type="number" placeholder="-" name="phone3" required="required" min="1" max="9999">
+            </td>
+        </tr>
+        <tr>
+            <td>Email</td>
+            <td colspan="3">
+                <input type="email" placeholder="email@soylent.com" name="email" required="required" style="text-transform: lowercase">
+            </td>
+        </tr>
+    </table>
+    <br>
+    <button type="submit">Download</button>
+
+</form>
+
+
+<script type="text/javascript">
+
+    function maxLengthCheck(object) {
+
+        if (object.value.length > object.max.length)
+            object.value = object.value.slice(0, object.max.length)
+
+    }
+
+    function downloadSignature(form) {
+
+        let name = form.name.value;
+        let title = form.title.value;
+        let phone1 = form.phone1.value;
+        let phone2 = form.phone2.value;
+        let phone3 = form.phone3.value;
+        let email = form.email.value;
+
+        let template = `<html>
+        <head>
+        </head>
+        <body style="font-family: Apercu, Helvetica, Arial, sans-serif; text-align: left; color: #212322;">
+        <table width="100%" style="border-collapse: collapse; margin: 0;">
+            <tbody>
+            <tr>
+                <td width="100" style="vertical-align: top; padding-right: 10px;">
+                    <a href="https://www.soylent.com" target="_blank">
+                        <img src="https://prettythings.soylent.com/misc/mail/soylent_logo.png" width="100" height="46">
+                    </a>
+                </td>
+                <td width="80%" style="border-top: 2px solid #212322; font-size: 80%; padding-top: 10px;">
+                    <strong style="font-weight: 800">${name}</strong><br>
+                    ${title}<br>
+                    <a href="tel:+1(${phone1})${phone2}-${phone3}" target="_blank" style="color: #212322; text-decoration: none !important;">
+                        ${phone1} ${phone2} ${phone3}</a><br>
+                    <a href="mailto:${email}" target="_blank" style="color: #212322; text-decoration: none !important;">
+                        ${email}</a>
+                </td>
+                <td width="20%" style="border-top: 2px solid #212322;">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                </td>
+                <td style="color: #9f9f9f; font-size: 60%; padding-top: 10px;">
+                    NOTICE: This e-mail may contain legally privileged, protected, or confidential information.
+                    If you are not the intended recipient, please notify me and delete this e-mail from your
+                    system without reading or forwarding to others. Thank you.
+                </td>
+                <td>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        </body>
+        </html>`;
+
+
+        var fileBlob = new Blob([template], {type: "text/html"});
+
+        var link = document.createElement("a");
+        link.setAttribute("href", URL.createObjectURL(fileBlob));
+        link.setAttribute("download", "signature.htm");
+        //link.appendChild(document.createTextNode("Save file"));
+        //document.body.appendChild(link);
+        link.click();
+
+    }
+
+
+</script>
+
+</body>
+</html>
